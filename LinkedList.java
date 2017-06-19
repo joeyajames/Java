@@ -55,7 +55,10 @@ public class LinkedList {
 		
 		while (thisNode != null) {
 			if (thisNode.getData() == data) {
-				prevNode.setNextNode(thisNode.getNextNode());
+				if (prevNode != null)
+					prevNode.setNextNode(thisNode.getNextNode());
+				else
+					this.root = null;
 				this.setSize(this.getSize()-1);
 				return true;
 			}
