@@ -1,0 +1,6 @@
+tasks:
+  - command: >
+      cd Java\ 8\ Streams &&
+      gp open JavaStreams.java &&
+      javac JavaStreams.java &&
+      java JavaStreams
