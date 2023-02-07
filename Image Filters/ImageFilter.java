@@ -16,8 +16,12 @@ public class ImageFilter {
 		catch (IOException e) { e.printStackTrace(System.out); }
 
 		if (img != null) {
+			//display(img);
+			img = toGrayScale(img);
+			//img = toGrayScale2(img);
 			display(img);
-			img = toGrayScale2(img);
+			img = pixelate(img);
+			//img = pixelate2(img, 3);
 			display(img);
 		}
 	}
@@ -34,6 +38,7 @@ public class ImageFilter {
 		frame.pack();
 		frame.setVisible(true);
 	}
+
 	// convert image to grayscale
 	public static BufferedImage toGrayScale (BufferedImage img) {
 		System.out.println("  Converting to GrayScale.");
@@ -44,24 +49,73 @@ public class ImageFilter {
 		g.dispose();
 		return grayImage;
 	}
+
 	public static BufferedImage toGrayScale2 (BufferedImage img) {
 		System.out.println("  Converting to GrayScale2.");
 		BufferedImage grayImage = new BufferedImage(
 			img.getWidth(), img.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-		int p=0, rgb=0, r=0, g=0, b=0;
-		for (int y=0; y<img.getHeight()-1; y++) {
-			for (int x=0; x<img.getWidth()-1; x++) {
+		int rgb=0, r=0, g=0, b=0;
+		for (int y=0; y<img.getHeight(); y++) {
+			for (int x=0; x<img.getWidth(); x++) {
 				rgb = (int)(img.getRGB(x, y));
 				r = ((rgb >> 16) & 0xFF);
 				g = ((rgb >> 8) & 0xFF);
 				b = (rgb & 0xFF);
-				p = (int)(0.2126 * r + 0.7152 * g + 0.0722 * b);
-				p = (255<<24) | (p<<16) | (p<<8) | p;
-				grayImage.setRGB(x,y,p);
+				rgb = (int)((r+g+b)/3);
+				//rgb = (int)(0.299 * r + 0.587 * g + 0.114 * b);
+				rgb = (255<<24) | (rgb<<16) | (rgb<<8) | rgb;
+				grayImage.setRGB(x,y,rgb);
 			}
 		}
 		return grayImage;
 	}
+
+	// apply 2x2 pixelation to a grayscale image
+	public static BufferedImage pixelate (BufferedImage img) {
+		BufferedImage pixImg = new BufferedImage(
+			img.getWidth(), img.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+		int pix = 0, p=0;
+		for (int y=0; y<img.getHeight()-2; y+=2) {
+			for (int x=0; x<img.getWidth()-2; x+=2) {
+				pix = (int)((img.getRGB(x, y)& 0xFF)
+				+ (img.getRGB(x+1, y)& 0xFF)
+				+ (img.getRGB(x, y+1)& 0xFF)
+				+ (img.getRGB(x+1, y+1)& 0xFF))/4;
+				p = (255<<24) | (pix<<16) | (pix<<8) | pix; 
+				pixImg.setRGB(x,y,p);
+				pixImg.setRGB(x+1,y,p);
+				pixImg.setRGB(x,y+1,p);
+				pixImg.setRGB(x+1,y+1,p);
+			}
+		}
+		return pixImg;
+	}
+
+	// apply nxn pixelation to a grayscale image
+	public static BufferedImage pixelate2 (BufferedImage img, int n) {
+		BufferedImage pixImg = new BufferedImage(
+			img.getWidth(), img.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+		int pix = 0, p=0;
+		for (int y=0; y<img.getHeight()-n; y+=n) {
+			for (int x=0; x<img.getWidth()-n; x+=n) {
+				for (int a=0; a<n; a++) {
+					for (int b=0; b<n; b++) {
+						pix += (img.getRGB(x+a, y+b)& 0xFF);
+					}
+				}
+				pix = (int)(pix/n/n);
+				for (int a=0; a<n; a++) {
+					for (int b=0; b<n; b++) {
+						p = (255<<24) | (pix<<16) | (pix<<8) | pix; 
+						pixImg.setRGB(x+a,y+b,p);
+					}
+				}
+				pix = 0;
+			}
+		}
+		return pixImg;
+	}	
+
 }
 
 
