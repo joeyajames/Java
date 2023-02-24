@@ -20,8 +20,10 @@ public class ImageFilter {
 			img = toGrayScale(img);
 			//img = toGrayScale2(img);
 			display(img);
-			img = pixelate(img);
+			//img = pixelate(img);
 			//img = pixelate2(img, 3);
+			//img = resize(img, 150);
+			img = blur(img);
 			display(img);
 		}
 	}
@@ -115,6 +117,41 @@ public class ImageFilter {
 		}
 		return pixImg;
 	}	
+
+	// scale a grayscale image
+	public static BufferedImage resize (BufferedImage img, int newHeight) {
+		System.out.println("  Scaling image.");
+		double scaleFactor = (double) newHeight/img.getHeight();
+		BufferedImage scaledImg = new BufferedImage(
+			(int)(scaleFactor*img.getWidth()), newHeight, BufferedImage.TYPE_BYTE_GRAY);
+		AffineTransform at = new AffineTransform();
+		at.scale(scaleFactor, scaleFactor);
+		AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+		return scaleOp.filter(img, scaledImg);
+	}
+
+	// apply Gaussian blur to a grayscale image
+	public static BufferedImage blur (BufferedImage img) {
+		BufferedImage blurImg = new BufferedImage(
+			img.getWidth()-2, img.getHeight()-2, BufferedImage.TYPE_BYTE_GRAY);
+		int pix = 0;
+		for (int y=0; y<blurImg.getHeight(); y++) {
+			for (int x=0; x<blurImg.getWidth(); x++) {
+				pix = (int)(4*(img.getRGB(x+1, y+1)& 0xFF)
+				+ 2*(img.getRGB(x+1, y)& 0xFF)
+				+ 2*(img.getRGB(x+1, y+2)& 0xFF)
+				+ 2*(img.getRGB(x, y+1)& 0xFF)
+				+ 2*(img.getRGB(x+2, y+1)& 0xFF)
+				+ (img.getRGB(x, y)& 0xFF)
+				+ (img.getRGB(x, y+2)& 0xFF)
+				+ (img.getRGB(x+2, y)& 0xFF)
+				+ (img.getRGB(x+2, y+2)& 0xFF))/16;
+				int p = (255<<24) | (pix<<16) | (pix<<8) | pix; 
+				blurImg.setRGB(x,y,p);
+			}
+		}
+		return blurImg;
+	}
 
 }
 
