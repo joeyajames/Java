@@ -23,10 +23,6 @@ public class LinkedList {
 		System.out.println(ll.find(5));
 	}
 	
-	public void setSize(int s) {
-		this.size = s;
-	}
-	
 	public int getSize() {
 		return this.size;
 	}
@@ -59,7 +55,7 @@ public class LinkedList {
 					prevNode.setNextNode(thisNode.getNextNode());
 				else
 					this.root = null;
-				this.setSize(this.getSize()-1);
+				this.size--;
 				return true;
 			}
 			prevNode = thisNode;
