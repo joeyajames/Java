@@ -1,12 +1,10 @@
 public void mergeSort (int[] list, int lowIndex, int highIndex) {
 	if (lowIndex == highIndex)
 		return;
-	else {
-		int midIndex = (lowIndex + highIndex) / 2;
+	        int midIndex =highIndex - (highIndex-lowIndex)/2 ;
 		mergeSort(list, lowIndex, midIndex);
 		mergeSort(list, midIndex + 1, highIndex);
 		merge(list, lowIndex, midIndex, highIndex);
-	} 
 }
 
 public void merge(int[] list, int lowIndex, int midIndex, int highIndex) {
