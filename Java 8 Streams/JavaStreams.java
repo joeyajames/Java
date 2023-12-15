@@ -12,7 +12,6 @@ public class JavaStreams {
 		IntStream
 			.range(1, 10)
 			.forEach(System.out::print);
-		System.out.println();
 		
 		// 2. Integer Stream with skip
 		IntStream
