@@ -15,7 +15,7 @@ class MapFunctions {
 		ages.put("Avni",11);
 		ages.put("Bing", 12);
 		ages.put("Cassie", 13);
-		ages.put("Devarshi", 14);
+		ages.put("Devarshi", 15);
 		System.out.println(ages);
 
 		// 2. Get an item from the map
