@@ -16,9 +16,9 @@ public class LinkedList {
 		System.out.println(ll.getSize());
 		ll.add(17);
 		ll.add(5);
-		ll.add(10);
+		ll.add(20);
 		System.out.println(ll.find(17).getData());
-		ll.remove(5);
+		ll.remove(6);
 		System.out.println(ll.getSize());
 		System.out.println(ll.find(5));
 	}

@@ -3,7 +3,7 @@
 class EscapeNestedLoops {
 	public static void main(String[] args) {
 
-		for(int x=0; x<8; x++) {
+		for(int x=0; x<9; x++) {
 			for(int y=1; y<4; y++) {
 				System.out.println(x + " " + y + " " + x*y);
 				if(x * y > 5)

@@ -6,7 +6,7 @@ public class Tree {
 	// some basic test code
 	public static void main(String[] args) {
 		Tree tree = new Tree();
-		int[] items = {5, 8, 7, 1, 9, 3, 0, 4, 6, 2};
+		int[] items = {5, 8, 7, 1, 3, 0, 4, 6, 2};
 		for (int i : items)
 			tree.insert(i);
 		
